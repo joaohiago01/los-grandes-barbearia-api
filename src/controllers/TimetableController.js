@@ -4,14 +4,15 @@ module.exports = {
     
     async post(req, res) {
         try {
-            const {date, available} = req.body;
+            const {date, available, time} = req.body;
             var timetable = await Timetable.findAll({
                 where: {
-                    date: date
+                    date: date,
+                    time: time
                 }
             });
             if (timetable.length < 1) {
-                timetable = await Timetable.create({date, available});
+                timetable = await Timetable.create({date, available, time});
                 res.status(201).send({message: 'Horário Cadastrado Com Sucesso!'});
             } else {
                 res.status(400).send({message: 'Esse Horário Já Está Cadastrado.'});

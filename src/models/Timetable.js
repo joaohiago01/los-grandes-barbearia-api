@@ -7,8 +7,8 @@ class Timetable extends Model {
                 type: DataTypes.DATE,
                 allowNull: false,
                 validate: {
-                    notEmpty: {msg: 'O campo Data e Hora é obrigatório.'},
-                    notNull: {msg: 'O campo Data e Hora é obrigatório.'},
+                    notEmpty: {msg: 'O campo Data é obrigatório.'},
+                    notNull: {msg: 'O campo Data é obrigatório.'},
                     isDate: true
                 }
             },
@@ -19,6 +19,15 @@ class Timetable extends Model {
                     notEmpty: {msg: 'Escolha uma opção.'},
                     notNull: {msg: 'Escolha uma opção.'},
                     isIn: [['available', 'not available']]
+                }
+            },
+
+            time: {
+                type: DataTypes.TIME,
+                allowNull: false,
+                validate: {
+                    notEmpty: {msg: 'O campo Hora é obrigatório.'},
+                    notNull: {msg: 'O campo Hora é obrigatório.'},
                 }
             },
         }, {

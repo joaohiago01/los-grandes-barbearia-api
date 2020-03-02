@@ -13,9 +13,9 @@ module.exports = {
             });
             if (timetable.length < 1) {
                 timetable = await Timetable.create({date, available, time});
-                res.status(201).send({message: 'Horário Cadastrado Com Sucesso!'});
+                res.status(201).send({message: 'Horário cadastrado com sucesso!'});
             } else {
-                res.status(400).send({message: 'Esse Horário Já Está Cadastrado.'});
+                res.status(400).send({message: 'Esse Horário já está cadastrado.'});
             }
         } catch(err) {
             return res.status(400).send({error: err});
@@ -38,27 +38,9 @@ module.exports = {
                     available: available
                 },
                 {where: {id: id}});
-                res.status(201).send({message: 'Horário Editado Com Sucesso!'});
+                res.status(201).send({message: 'Horário editado com sucesso!'});
             } else {
-                res.status(400).send({message: 'Erro! Por Favor Tente Novamente.'});
-            }
-        } catch(err) {
-            return res.status(400).send({error: err});
-        }
-    },
-
-    async putActivity(req, res) {//TEM QUE FAZER A INCREMENTAÇÃO NA MÃO
-        try {
-            const {id, activity} = req.body;
-            var timetable = await Timetable.findByPk(id);
-            if (timetable) {
-                timetable = await Timetable.update({
-                    activity: activity
-                },
-                {where: {id: id}});
-                res.json(timetable);
-            } else {
-                res.status(400).send({message: 'Erro! Por Favor Tente Novamente.'});
+                res.status(400).send({message: 'Erro! Por favor tente novamente.'});
             }
         } catch(err) {
             return res.status(400).send({error: err});
@@ -72,9 +54,9 @@ module.exports = {
             timetable = await Timetable.destroy({
                 where: {id: id}
             });
-            res.status(201).send({message: 'Horário Removido Com Sucesso!'});
+            res.status(201).send({message: 'Horário removido com sucesso!'});
         } else {
-            res.status(400).send({message: 'Erro! Por Favor Tente Novamente.'});
+            res.status(400).send({message: 'Erro! Por favor tente novamente.'});
         }
     },
 

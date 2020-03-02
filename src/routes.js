@@ -15,34 +15,34 @@ routes.delete('/barbershop', BarbershopController.delete);
 
 routes.post('/client', ClientController.post);
 routes.get('/client', ClientController.get);
+routes.get('/client/list-clients', ClientController.list_clients);
 routes.get('/client/loyal-clients', ClientController.loyal_clients);
 routes.put('/client', ClientController.put);
-routes.put('/client/putLoyal', ClientController.putLoyal);
 routes.delete('/client', ClientController.delete);
 
 routes.post('/barber', BarberController.post);
 routes.get('/barber', BarberController.get);
-routes.get('/barber/most-productives', BarberController.barbers_most_productive);
+routes.get('/barber/list-barbers', BarberController.list_barbers);
+routes.get('/barber/barbers-most-productive', BarberController.barbers_most_productive);
 routes.put('/barber', BarberController.put);
-routes.put('/barber/putProductivity', BarberController.putProductivity);
 routes.delete('/barber', BarberController.delete);
 
 routes.post('/service', ServiceController.post);
 routes.get('/service', ServiceController.get);
-routes.get('/service/most-requests', ServiceController.services_most_requests);
+routes.get('/service/list-services', ServiceController.list_services);
+routes.get('/service/services-most-requests', ServiceController.services_most_requests);
 routes.put('/service', ServiceController.put);
-routes.put('/service/putRequests', ServiceController.putRequests);
 routes.delete('/service', ServiceController.delete);
 
 routes.post('/timetable', TimetableController.post);
 routes.get('/timetable', TimetableController.get);
 routes.get('/timetable/most-actives', TimetableController.timetables_most_active);
 routes.put('/timetable', TimetableController.put);
-routes.put('/timetable/putActivity', TimetableController.putActivity);
 routes.delete('/timetable', TimetableController.delete);
 
 routes.post('/scheduling', SchedulingController.post);
 routes.get('/scheduling', SchedulingController.get);
+routes.get('/scheduling/list-schedulings', SchedulingController.list_schedulings);
 routes.get('/scheduling/gain-in-a-day', SchedulingController.gain_in_a_day);
 routes.get('/scheduling/gain-in-a-week', SchedulingController.gain_in_a_week);
 routes.get('/scheduling/gain-in-a-month', SchedulingController.gain_in_a_month);

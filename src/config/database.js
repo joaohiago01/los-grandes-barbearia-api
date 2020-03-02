@@ -1,3 +1,5 @@
+//PRODUCTION
+
 module.exports = {
     host: 'ec2-54-197-34-207.compute-1.amazonaws.com',
     database: 'de23hn6llaqej9',
@@ -10,3 +12,20 @@ module.exports = {
         timestamps: false
     }
 };
+
+
+//DEV
+/*
+module.exports = {
+    host: 'localhost',
+    database: 'LosGrandesBarbearia',
+    username: 'postgres',
+    password: 'ads',
+    port: 5432,
+    dialect: 'postgres',
+    logging: console.log(),
+    define: {
+        timestamps: false
+    }
+};
+*/

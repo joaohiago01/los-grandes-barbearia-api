@@ -4,7 +4,7 @@ class Timetable extends Model {
     static init(sequelize) {
         super.init({
             date: {
-                type: DataTypes.DATE,
+                type: DataTypes.DATEONLY,
                 allowNull: false,
                 validate: {
                     notEmpty: {msg: 'O campo Data é obrigatório.'},

@@ -1,5 +1,5 @@
 const Scheduling = require('../models/Scheduling');
-const {NOW, Op, Sequelize, Model} = require('sequelize');
+const {Op, Sequelize} = require('sequelize');
 const Service = require('../models/Service');
 
 module.exports = {
@@ -15,9 +15,9 @@ module.exports = {
             });
             if (scheduling.length < 1) {
                 scheduling = await Scheduling.create({client_id, barber_id, timetable_id, concluded});
-                res.status(201).send({message: 'Agendamento Cadastrado Com Sucesso!'});
+                res.status(201).send({message: 'Agendamento cadastrado com sucesso!'});
             } else {
-                res.status(400).send({message: 'Esse Agendamento Já Está Cadastrado.'});
+                res.status(400).send({message: 'Esse Agendamento já está cadastrado.'});
             }
         } catch(err) {
             return res.status(400).send({error: err});
@@ -25,6 +25,12 @@ module.exports = {
     },
 
     async get(req, res) {
+        const {id} = req.body;
+        const scheduling = await Scheduling.findByPk(id);
+        return res.json(scheduling);
+    },
+
+    async list_schedulings(req, res) {
         const scheduling = await Scheduling.findAll({
             order: [['concluded', 'asc']]
         });
@@ -43,7 +49,7 @@ module.exports = {
                 {where: {id: id}});
                 return res.json(scheduling);
             } else {
-                res.status(400).send({message: 'Erro! Por Favor Tente Novamente.'});
+                res.status(400).send({message: 'Erro! Por favor tente novamente.'});
             }
         } catch(err) {
             return res.status(400).send({error: err});
@@ -57,9 +63,9 @@ module.exports = {
             scheduling = await Scheduling.destroy({
                 where: {id: id}
             });
-            res.status(201).send({message: 'Agendamento Removido Com Sucesso!'});
+            res.status(201).send({message: 'Agendamento removido com sucesso!'});
         } else {
-            res.status(400).send({message: 'Erro! Por Favor Tente Novamente.'});
+            res.status(400).send({message: 'Erro! Por favor tente novamente.'});
         }
     },
 

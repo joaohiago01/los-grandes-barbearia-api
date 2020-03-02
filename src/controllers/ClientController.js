@@ -1,4 +1,7 @@
 const Client = require('../models/Client');
+const Sequelize = require('sequelize');
+const db = require('../config/database');
+const sequelize = new Sequelize(db);
 
 module.exports = {
     
@@ -12,9 +15,9 @@ module.exports = {
             });
             if (client.length < 1) {
                 client = await Client.create({name, email, phone, password});
-                res.status(201).send({message: 'Cliente Cadastrado Com Sucesso!'});
+                res.status(201).send({message: 'Cliente cadastrado com sucesso!'});
             } else {
-                res.status(400).send({message: 'Esse Cliente Já Está Cadastrado.'});
+                res.status(400).send({message: 'Esse Cliente já está cadastrado.'});
             }
         } catch(err) {
             return res.status(400).send({error: err});
@@ -24,6 +27,13 @@ module.exports = {
     async get(req, res) {
         const {id} = req.body;
         const client = await Client.findByPk(id);
+        return res.json(client);
+    },
+
+    async list_clients(req, res) {
+        const client = await Client.findAll({
+            order: [['name', 'asc']]
+        });
         return res.json(client);
     },
 
@@ -38,27 +48,9 @@ module.exports = {
                     password: password
                 },
                 {where: {id: id}});
-                res.status(201).send({message: 'Cliente Editado Com Sucesso!'});
+                res.status(201).send({message: 'Cliente editado com sucesso!'});
             } else {
-                res.status(400).send({message: 'Erro! Por Favor Tente Novamente.'});
-            }
-        } catch(err) {
-            return res.status(400).send({error: err});
-        }
-    },
-
-    async putLoyal(req, res) {//TEM QUE FAZER A INCREMENTAÇÃO NA MÃO
-        try {
-            const {id, loyal} = req.body;
-            var client = await Client.findByPk(id);
-            if (client) {
-                client = await Client.update({
-                    loyal: loyal
-                },
-                {where: {id: id}});
-                res.json(client);
-            } else {
-                res.status(400).send({message: 'Erro! Por Favor Tente Novamente.'});
+                res.status(400).send({message: 'Erro! Por favor tente novamente.'});
             }
         } catch(err) {
             return res.status(400).send({error: err});
@@ -72,17 +64,16 @@ module.exports = {
             client = await Client.destroy({
                 where: {id: id}
             });
-            res.status(201).send({message: 'Cliente Removido Com Sucesso!'});
+            res.status(201).send({message: 'Cliente removido com sucesso!'});
         } else {
-            res.status(400).send({message: 'Erro! Por Favor Tente Novamente.'});
+            res.status(400).send({message: 'Erro! Por favor tente novamente.'});
         }
     },
 
     async loyal_clients(req, res) {
-        const client = await Client.findAll({
-            order: [['loyal', 'desc']]
+        sequelize.query('select c.id, c.name, count(client_id) as loyal from client as c inner join scheduling as s on (c.id = s.client_id) where s.concluded = "concluded" group by c.id order by loyal desc', {type: sequelize.QueryTypes.SELECT}).then(results => {
+            return res.json(results);
         });
-        return res.json(client);
     }
 
 }

@@ -6,7 +6,7 @@ module.exports = {
         try {
             const {location, contact, images} = req.body;
             await Barbershop.create({location, contact, images});
-            res.status(201).send({message: 'Dados Cadastrados Com Sucesso!'});
+            res.status(201).send({message: 'Dados cadastrados com sucesso!'});
         } catch(err) {
             return res.status(400).send({error: err});
         }
@@ -28,9 +28,9 @@ module.exports = {
                     images: images
                 },
                 {where: {id: id}});
-                res.status(201).send({message: 'Dados Editados Com Sucesso!'});
+                res.status(201).send({message: 'Dados editados com sucesso!'});
             } else {
-                res.status(400).send({message: 'Erro! Por Favor Tente Novamente.'});
+                res.status(400).send({message: 'Erro! Por favor tente novamente.'});
             }
         } catch(err) {
             return res.status(400).send({error: err});
@@ -44,9 +44,9 @@ module.exports = {
             barbershop = await Barbershop.destroy({
                 where: {id: id}
             });
-            res.status(201).send({message: 'Dados Removidos Com Sucesso!'});
+            res.status(201).send({message: 'Dados removidos com sucesso!'});
         } else {
-            res.status(400).send({message: 'Erro! Por Favor Tente Novamente.'});
+            res.status(400).send({message: 'Erro! Por favor tente novamente.'});
         }
     }
 

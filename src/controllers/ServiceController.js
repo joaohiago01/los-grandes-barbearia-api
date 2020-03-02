@@ -40,22 +40,17 @@ module.exports = {
     async put(req, res) {
         try {
             const {id, name, price, average_time, images} = req.body;
-            if (service.length < 1) {
-                service = await Service.findByPk(id);
-                if (service) {
-                    service = await Service.update({
-                        name: name,
-                        price: price,
-                        average_time: average_time,
-                        images: images
-                    },
-                    {where: {id: id}});
-                    res.status(201).send({message: 'Serviço editado com sucesso!'});
-                } else {
-                    res.status(400).send({message: 'Erro! Por favor tente novamente.'});
-                }
+            var service = await Service.findByPk(id);
+            if (service) {
+                service = await Service.update({
+                    price: price,
+                    average_time: average_time,
+                    images: images
+                },
+                {where: {id: id}});
+                res.status(201).send({message: 'Serviço editado com sucesso!'});
             } else {
-                res.status(400).send({message: 'Esse Serviço já está cadastrado.'});
+                res.status(400).send({message: 'Erro! Por favor tente novamente.'});
             }
 
         } catch(err) {

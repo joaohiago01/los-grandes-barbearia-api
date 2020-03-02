@@ -40,29 +40,21 @@ module.exports = {
     async put(req, res) {
         try {
             const {id, name, email, password, admin, available, image} = req.body;
-            sequelize.query('select * from barber where name = name and id != id', {type: sequelize.QueryTypes.SELECT}).then(results => {
-                if (results.isEmpty == true) {
-                    var barber = Barber.findByPk(id);
-                    if (barber) {
-                        barber = Barber.update({
-                            name: name,
-                            email: email,
-                            password: password,
-                            admin: admin,
-                            available: available,
-                            image: image
-                        },
-                        {where: {id: id}});
-                        res.json(barber);
-                        //res.status(201).send({message: 'Barbeiro editado com sucesso!'});
-                    } else {
-                        res.status(400).send({message: 'Erro! Por favor tente novamente.'});
-                    }
-                } else {
-                    res.json(results);
-                    //res.status(400).send({message: 'Esse Barbeiro já está cadastrado.'});
-                }
-            });
+            var barber = Barber.findByPk(id);
+            if (barber) {
+                barber = Barber.update({
+                    name: name,
+                    email: email,
+                    password: password,
+                    admin: admin,
+                    available: available,
+                    image: image
+                },
+                {where: {id: id}});
+                res.status(201).send({message: 'Barbeiro editado com sucesso!'});
+            } else {
+                res.status(400).send({message: 'Erro! Por favor tente novamente.'});
+            }
         } catch(err) {
             return res.status(400).send({error: err});
         }

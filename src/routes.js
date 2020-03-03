@@ -41,7 +41,6 @@ routes.put('/timetable', TimetableController.put);
 routes.delete('/timetable', TimetableController.delete);
 
 routes.post('/scheduling', SchedulingController.post);
-routes.post('/scheduling/scheduling-services', SchedulingController.scheduling_services);
 routes.get('/scheduling', SchedulingController.get);
 routes.get('/scheduling/list-schedulings', SchedulingController.list_schedulings);
 routes.get('/scheduling/gain-in-a-day', SchedulingController.gain_in_a_day);

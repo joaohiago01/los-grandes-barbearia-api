@@ -6,21 +6,26 @@ module.exports = {
     
     async post(req, res) {
         try {
-            //FAZER UM FOR VARRENDO TODOS OS SERVIÇOS DO AGENDAMENTO E INCREMENTAR UMA VÁRIAVEL TOTAL_PRICE A CADA GET DE UM SERVIÇO
-            const {client_id, barber_id, timetable_id, concluded, services_id} = req.body;
+            const {client_id, barber_id, timetable_id, services_id} = req.body;
             var scheduling = await Scheduling.findAll({
                 where: {
                     timetable_id: timetable_id
                 }
             });
             if (scheduling.length < 1) {
-                scheduling = await Scheduling.create({client_id, barber_id, timetable_id, concluded});
-                
+                var total_price = 0;
+                for (let index = 0; index < services_id.length; index++) {
+                    var service_id = services_id[index];
+                    const service = await Service.findByPk(service_id);
+                    total_price = total_price + parseFloat(service.price);
+                }
+                scheduling = await Scheduling.create({client_id, barber_id, timetable_id, total_price});
                 for (let index = 0; index < services_id.length; index++) {
                     var service_id = services_id[index];
                     const [service] = await Service.findOrCreate({where: {id: service_id}});
                     await scheduling.addService(service);
                 }
+                
                 res.status(201).send({message: 'Agendamento cadastrado com sucesso!'});
             } else {
                 res.status(400).send({message: 'Esse Agendamento já está cadastrado.'});
@@ -38,18 +43,17 @@ module.exports = {
 
     async list_schedulings(req, res) {
         const scheduling = await Scheduling.findAll({
-            order: [['concluded', 'asc']]
+            order: [['concluded', 'desc']]
         });
         return res.json(scheduling);
     },
 
     async put(req, res) {
         try {
-            const {id, total_price, concluded} = req.body;
+            const {id, concluded} = req.body;
             var scheduling = await Scheduling.findByPk(id);
             if (scheduling) {
                 scheduling = await Scheduling.update({
-                    total_price: total_price,
                     concluded: concluded
                 },
                 {where: {id: id}});
@@ -73,15 +77,6 @@ module.exports = {
         } else {
             res.status(400).send({message: 'Erro! Por favor tente novamente.'});
         }
-    },
-
-    async scheduling_services(req, res) {
-        const {scheduling_id, service_id} = req.body;
-        const [service] = await Service.findOrCreate({where: {id: service_id}});
-        const scheduling = await Scheduling.findByPk(scheduling_id); 
-        //await scheduling.addService(service);
-        await scheduling.setServices([services_id]);
-        return res.json(scheduling);
     },
 
     async gain_in_a_day(req, res) {

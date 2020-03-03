@@ -7,6 +7,7 @@ class Scheduling extends Model {
             concluded: {
                 type: DataTypes.STRING,
                 allowNull: false,
+                defaultValue: 'not concluded',
                 validate: {
                     notEmpty: {msg: 'Escolha uma opção.'},
                     notNull: {msg: 'Escolha uma opção.'},

@@ -39,7 +39,7 @@ class Service extends Model {
     }
 
     static associate(models) {
-        this.belongsToMany(models.Scheduling, {foreignKey: 'service_id', through: 'scheduling_service', as: 'schedulings'});
+        this.belongsToMany(models.Scheduling, {foreignKey: 'service_id', through: 'scheduling_service', as: 'scheduling'});
     }
 }
 

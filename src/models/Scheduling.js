@@ -23,7 +23,7 @@ class Scheduling extends Model {
         this.belongsTo(models.Client, {foreignKey: 'client_id', as: 'client'});
         this.belongsTo(models.Barber, {foreignKey: 'barber_id', as: 'barber'});
         this.belongsTo(models.Timetable, {foreignKey: 'timetable_id', as: 'timetable'});
-        this.belongsToMany(models.Service, {foreignKey: 'scheduling_id', through: 'scheduling_service', as: 'services'});
+        this.belongsToMany(models.Service, {foreignKey: 'scheduling_id', through: 'scheduling_service', as: 'service'});
     }
 }
 

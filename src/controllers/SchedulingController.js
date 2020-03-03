@@ -7,7 +7,7 @@ module.exports = {
     async post(req, res) {
         try {
             //FAZER UM FOR VARRENDO TODOS OS SERVIÇOS DO AGENDAMENTO E INCREMENTAR UMA VÁRIAVEL TOTAL_PRICE A CADA GET DE UM SERVIÇO
-            const {client_id, barber_id, timetable_id, concluded} = req.body;
+            const {client_id, barber_id, timetable_id, concluded, services_id} = req.body;
             var scheduling = await Scheduling.findAll({
                 where: {
                     timetable_id: timetable_id
@@ -15,6 +15,12 @@ module.exports = {
             });
             if (scheduling.length < 1) {
                 scheduling = await Scheduling.create({client_id, barber_id, timetable_id, concluded});
+                
+                for (let index = 0; index < services_id.length; index++) {
+                    var service_id = services_id[index];
+                    const [service] = await Service.findOrCreate({where: {id: service_id}});
+                    await scheduling.addService(service);
+                }
                 res.status(201).send({message: 'Agendamento cadastrado com sucesso!'});
             } else {
                 res.status(400).send({message: 'Esse Agendamento já está cadastrado.'});
@@ -69,12 +75,14 @@ module.exports = {
         }
     },
 
-    /*async scheduling_services(req, res) {
+    async scheduling_services(req, res) {
         const {scheduling_id, service_id} = req.body;
-        var service = Service.findByPk(service_id);
-        var scheduling = Scheduling.findByPk(scheduling_id); 
-        scheduling = await Scheduling.addServices(service);
-    },*/
+        const [service] = await Service.findOrCreate({where: {id: service_id}});
+        const scheduling = await Scheduling.findByPk(scheduling_id); 
+        //await scheduling.addService(service);
+        await scheduling.setServices([services_id]);
+        return res.json(scheduling);
+    },
 
     async gain_in_a_day(req, res) {
         const {date} = req.body;

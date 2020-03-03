@@ -61,9 +61,6 @@ module.exports = {
     },
 
     async timetables_most_active(req, res) {
-        const timetable = await Timetable.findAll({
-            order: [['activity', 'desc']]
-        });
         return res.json(timetable);
     }
 

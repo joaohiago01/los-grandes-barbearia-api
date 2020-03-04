@@ -1,6 +1,8 @@
 const Scheduling = require('../models/Scheduling');
-const {Op, Sequelize} = require('sequelize');
 const Service = require('../models/Service');
+const Sequelize = require('sequelize');
+const db = require('../config/database');
+const sequelize = new Sequelize(db);
 
 module.exports = {
     
@@ -26,7 +28,7 @@ module.exports = {
                     await scheduling.addService(service);
                 }
                 
-                res.status(201).send({message: 'Agendamento cadastrado com sucesso!'});
+                res.status(201).send({message: 'Agendamento realizado com sucesso!'});
             } else {
                 res.status(400).send({message: 'Esse Agendamento já está cadastrado.'});
             }
@@ -57,7 +59,7 @@ module.exports = {
                     concluded: concluded
                 },
                 {where: {id: id}});
-                return res.json(scheduling);
+                res.status(201).send({message: 'Agendamento finalizado com sucesso!'});
             } else {
                 res.status(400).send({message: 'Erro! Por favor tente novamente.'});
             }
@@ -79,49 +81,44 @@ module.exports = {
         }
     },
 
-    async gain_in_a_day(req, res) {
-        const {date} = req.body;
-        var gain = await Scheduling.findAll({
-            attributes: [[Sequelize.fn('sum', Sequelize.col('total_price')), 'gain']],
-            where: {concluded: 'concluded'},
-            include: {association: 'timetable',
-            where: {date: date}},
-            group: ['Scheduling.id', 'timetable.id']
+    async gain_of_the_today(req, res) {
+        sequelize.query('select sum(total_price) as gain from scheduling as s inner join timetable as t on (s.timetable_id = t.id) where date = current_date', {type: sequelize.QueryTypes.SELECT}).then(results => {
+            return res.json(results);
         });
-        return res.json(gain);
+    },
+
+    async gain_in_a_specific_day(req, res) {
+        const {date} = req.body;
+        var date_format = "'" + date.toString() + "'";
+        sequelize.query('select sum(total_price) as gain from scheduling as s inner join timetable as t on (s.timetable_id = t.id) where date = ' + date_format, {type: sequelize.QueryTypes.SELECT}).then(results => {
+            return res.json(results);
+        });
+    },
+
+    async gain_from_specific_day(req, res) {
+        const {date} = req.body;
+        var date_format = "'" + date.toString() + "'";
+        sequelize.query('select sum(total_price) as gain from scheduling as s inner join timetable as t on (s.timetable_id = t.id) where date between ' + date_format + ' and current_date;', {type: sequelize.QueryTypes.SELECT}).then(results => {
+            return res.json(results);
+        });
     },
 
     async gain_in_a_week(req, res) {
-        const {date} = req.body;
-        var gain = await Scheduling.findAll({
-            attributes: [[Sequelize.fn('sum', Sequelize.col('total_price')), 'gain']],
-            where: {concluded: 'concluded'},
-            include: {association: 'timetable', [Op.between]: [Sequelize.literal(`NOW() - INTERVAL '7 DAY'`), date]},
-            group: ['Scheduling.id', 'timetable.id']
+        sequelize.query('select sum(total_price) as gain from scheduling as s inner join timetable as t on (s.timetable_id = t.id) where date between (current_date - INTERVAL ' + "'" + '7 DAY' + "'" + ') and current_date', {type: sequelize.QueryTypes.SELECT}).then(results => {
+            return res.json(results);
         });
-        return res.json(gain);
     },
 
     async gain_in_a_month(req, res) {
-        const {date} = req.body;
-        var gain = await Scheduling.findAll({
-            attributes: [[Sequelize.fn('sum', Sequelize.col('total_price')), 'gain']],
-            where: {concluded: 'concluded'},
-            include: {association: 'timetable', [Op.between]: [Sequelize.literal(`NOW() - INTERVAL '1 MONTH'`), date]},
-            group: ['Scheduling.id', 'timetable.id']
+        sequelize.query('select sum(total_price) as gain from scheduling as s inner join timetable as t on (s.timetable_id = t.id) where date between (current_date - INTERVAL ' + "'" + '1 MONTH' + "'" + ') and current_date', {type: sequelize.QueryTypes.SELECT}).then(results => {
+            return res.json(results);
         });
-        return res.json(gain);
     },
 
     async gain_in_a_year(req, res) {
-        const {date} = req.body;
-        var gain = await Scheduling.findAll({
-            attributes: [[Sequelize.fn('sum', Sequelize.col('total_price')), 'gain']],
-            where: {concluded: 'concluded'},
-            include: {association: 'timetable', [Op.between]: [Sequelize.literal(`NOW() - INTERVAL '1 YEAR'`), date]},
-            group: ['Scheduling.id', 'timetable.id']
+        sequelize.query('select sum(total_price) as gain from scheduling as s inner join timetable as t on (s.timetable_id = t.id) where date between (current_date - INTERVAL ' + "'" + '1 YEAR' + "'" + ') and current_date', {type: sequelize.QueryTypes.SELECT}).then(results => {
+            return res.json(results);
         });
-        return res.json(gain);
     }
 
 }

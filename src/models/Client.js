@@ -9,7 +9,7 @@ class Client extends Model {
                 validate: {
                     notEmpty: {msg: 'O campo Nome é obrigatório.'},
                     notNull: {msg: 'O campo Nome é obrigatório.'},
-                    len: {args: [3, 60], msg: 'O campo Nome deve ter entre 3 e 60 caracteres.'}
+                    len: {args: [3, 40], msg: 'O campo Nome deve ter entre 3 e 40 caracteres.'}
                 }
             },//FALTA A VALIDAÇÃO PARA QUE SÓ SE ACEITE LETRAS NO NOME
             email: {

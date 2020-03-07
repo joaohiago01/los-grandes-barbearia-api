@@ -15,6 +15,7 @@ class Timetable extends Model {
             available: {
                 type: DataTypes.STRING,
                 allowNull: false,
+                defaultValue: 'available',
                 validate: {
                     notEmpty: {msg: 'Escolha uma opção.'},
                     notNull: {msg: 'Escolha uma opção.'},

@@ -36,7 +36,6 @@ routes.delete('/service', ServiceController.delete);
 
 routes.post('/timetable', TimetableController.post);
 routes.get('/timetable', TimetableController.get);
-routes.get('/timetable/most-actives', TimetableController.timetables_most_active);
 routes.put('/timetable', TimetableController.put);
 routes.delete('/timetable', TimetableController.delete);
 

@@ -4,15 +4,16 @@ module.exports = {
     
     async post(req, res) {
         try {
-            const {date, available, time} = req.body;
+            const {time, date} = req.body;
             var timetable = await Timetable.findAll({
                 where: {
-                    date: date,
-                    time: time
+                    time: time,
+                    date: date
                 }
             });
+
             if (timetable.length < 1) {
-                timetable = await Timetable.create({date, available, time});
+                timetable = await Timetable.create({time, date});
                 res.status(201).send({message: 'Horário cadastrado com sucesso!'});
             } else {
                 res.status(400).send({message: 'Esse Horário já está cadastrado.'});
@@ -24,18 +25,20 @@ module.exports = {
 
     async get(req, res) {
         const timetable = await Timetable.findAll({
-            order: [['date', 'asc']]
+            group: ['date', 'id'],
+            order: [['time', 'asc']]
         });
         return res.json(timetable);
     },
 
     async put(req, res) {
         try {
-            const {id, available} = req.body;
+            const {id, available, date} = req.body;
             var timetable = await Timetable.findByPk(id);
             if (timetable) {
                 timetable = await Timetable.update({
-                    available: available
+                    available: available,
+                    date: date
                 },
                 {where: {id: id}});
                 res.status(201).send({message: 'Horário editado com sucesso!'});
@@ -58,10 +61,6 @@ module.exports = {
         } else {
             res.status(400).send({message: 'Erro! Por favor tente novamente.'});
         }
-    },
-
-    async timetables_most_active(req, res) {
-        return res.json(timetable);
-    }
+    },  
 
 }

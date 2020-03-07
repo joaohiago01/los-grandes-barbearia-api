@@ -36,7 +36,13 @@ routes.delete('/service', ServiceController.delete);
 
 routes.post('/timetable', TimetableController.post);
 routes.get('/timetable', TimetableController.get);
+routes.get('/timetable/list-timetable', TimetableController.list_timetable);
+routes.get('/timetable/clients-affected-day', TimetableController.clients_affected_day);
+routes.get('/timetable/clients-affected-day-for-hour', TimetableController.clients_affected_day_for_hour);
 routes.put('/timetable', TimetableController.put);
+routes.put('/timetable/timetable-day', TimetableController.putTimetableDay);
+routes.put('/timetable/all-timetable', TimetableController.putAllTimetable);
+routes.put('/timetable/timetable-day-for-hour', TimetableController.putTimetableDayForHour);
 routes.delete('/timetable', TimetableController.delete);
 
 routes.post('/scheduling', SchedulingController.post);

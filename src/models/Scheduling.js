@@ -14,6 +14,23 @@ class Scheduling extends Model {
                     isIn: [['concluded', 'not concluded']]
                 }
             },
+            date: {
+                type: DataTypes.DATEONLY,
+                allowNull: false,
+                validate: {
+                    notEmpty: {msg: 'O campo Data é obrigatório.'},
+                    notNull: {msg: 'O campo Data é obrigatório.'},
+                    isDate: true
+                }
+            },
+            time: {
+                type: DataTypes.TIME,
+                allowNull: false,
+                validate: {
+                    notEmpty: {msg: 'O campo Hora é obrigatório.'},
+                    notNull: {msg: 'O campo Hora é obrigatório.'},
+                }
+            },
         }, {
             sequelize,
             tableName: 'scheduling'

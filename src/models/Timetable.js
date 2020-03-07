@@ -22,7 +22,6 @@ class Timetable extends Model {
                     isIn: [['available', 'not available']]
                 }
             },
-
             time: {
                 type: DataTypes.TIME,
                 allowNull: false,

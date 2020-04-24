@@ -1,31 +1,41 @@
 const Barber = require('../models/Barber');
+const Client = require('../models/Client');
 const Sequelize = require('sequelize');
 const db = require('../config/database');
 const sequelize = new Sequelize(db);
 
 module.exports = {
-    
+
     async post(req, res) {
         try {
-            const {name, email, phone, password, admin, available, image} = req.body;
+            const { name, email, phone, password, admin, available, image } = req.body;
             var barber = await Barber.findAll({
                 where: {
                     phone: phone
                 }
             });
-            if (barber.length < 1) {
-                barber = await Barber.create({name, email, phone, password, admin, available, image});
-                res.status(201).send({message: 'Barbeiro cadastrado com sucesso!'});
+            var client = await Client.findAll({
+                where: {
+                    phone: phone,
+                }
+            });
+            if (client.length >= 1) {
+                res.status(400).send({ message: 'Esse Telefone já está sendo usado.' });
             } else {
-                res.status(400).send({message: 'Esse Barbeiro já está cadastrado.'});
+                if (barber.length < 1) {
+                    barber = await Barber.create({ name, email, phone, password, admin, available, image });
+                    res.status(201).send({ message: 'Barbeiro cadastrado com sucesso!' });
+                } else {
+                    res.status(400).send({ message: 'Esse Barbeiro já está cadastrado.' });
+                }
             }
-        } catch(err) {
-            return res.status(400).send({error: err});
+        } catch (err) {
+            return res.status(400).send({ error: err });
         }
     },
 
     async get(req, res) {
-        const {id} = req.body;
+        const { id } = req.body;
         const barber = await Barber.findByPk(id);
         return res.json(barber);
     },
@@ -39,7 +49,7 @@ module.exports = {
 
     async put(req, res) {
         try {
-            const {id, name, email, password, admin, available, image} = req.body;
+            const { id, name, email, password, admin, available, image } = req.body;
             var barber = Barber.findByPk(id);
             if (barber) {
                 barber = Barber.update({
@@ -50,31 +60,31 @@ module.exports = {
                     available: available,
                     image: image
                 },
-                {where: {id: id}});
-                res.status(201).send({message: 'Barbeiro editado com sucesso!'});
+                    { where: { id: id } });
+                res.status(201).send({ message: 'Barbeiro editado com sucesso!' });
             } else {
-                res.status(400).send({message: 'Erro! Por favor tente novamente.'});
+                res.status(400).send({ message: 'Erro! Por favor tente novamente.' });
             }
-        } catch(err) {
-            return res.status(400).send({error: err});
+        } catch (err) {
+            return res.status(400).send({ error: err });
         }
     },
 
     async delete(req, res) {
-        const {id} = req.body;
+        const { id } = req.body;
         var barber = await Barber.findByPk(id);
         if (barber) {
             barber = await Barber.destroy({
-                where: {id: id}
+                where: { id: id }
             });
-            res.status(201).send({message: 'Barbeiro removido com sucesso!'});
+            res.status(201).send({ message: 'Barbeiro removido com sucesso!' });
         } else {
-            res.status(400).send({message: 'Erro! Por favor tente novamente.'});
+            res.status(400).send({ message: 'Erro! Por favor tente novamente.' });
         }
     },
 
     async barbers_most_productive(req, res) {
-        sequelize.query('select b.id, b.name, count(barber_id) as productivity from barber as b inner join scheduling as s on (b.id = s.barber_id) where s.concluded = "concluded" group by b.id order by productivity desc', {type: sequelize.QueryTypes.SELECT}).then(results => {
+        sequelize.query('select b.id, b.name, count(barber_id) as productivity from barber as b inner join scheduling as s on (b.id = s.barber_id) where s.concluded = "concluded" group by b.id order by productivity desc', { type: sequelize.QueryTypes.SELECT }).then(results => {
             return res.json(results);
         });
     }

@@ -5,8 +5,13 @@ const BarberController = require('./controllers/BarberController');
 const ServiceController = require('./controllers/ServiceController');
 const TimetableController = require('./controllers/TimetableController');
 const SchedulingController = require('./controllers/SchedulingController');
+const AuthController = require('./controllers/AuthController');
+const authMiddleware = require("./middlewares/auth");
 
 const routes = express.Router();
+
+routes.post('/authenticate', AuthController.authenticate);
+//routes.use(authMiddleware);
 
 routes.post('/barbershop', BarbershopController.post);
 routes.get('/barbershop', BarbershopController.get);

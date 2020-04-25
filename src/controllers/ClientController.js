@@ -9,11 +9,6 @@ module.exports = {
     async post(req, res) {
         try {
             const { name, email, phone, password } = req.body;
-            var client = await Client.findAll({
-                where: {
-                    phone: phone,
-                }
-            });
             var barber = await Barber.findAll({
                 where: {
                     phone: phone
@@ -22,12 +17,16 @@ module.exports = {
             if (barber.length >= 1) {
                 res.status(400).send({ message: 'Esse Telefone já está sendo usado.' });
             } else {
+                var client = await Client.findAll({
+                    where: {
+                        phone: phone,
+                    }
+                });
                 if (client.length < 1) {
                     client = await Client.create({ name, email, phone, password });
-                    //res.status(201).send({message: 'Cliente cadastrado com sucesso!'});
                     return res.json({
                         client: client,
-                        token: client.generateToken()
+                        token: client.generateToken(),
                     });
                 } else {
                     res.status(400).send({ message: 'Esse Cliente já está cadastrado.' });

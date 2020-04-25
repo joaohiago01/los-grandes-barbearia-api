@@ -7,11 +7,15 @@ const TimetableController = require('./controllers/TimetableController');
 const SchedulingController = require('./controllers/SchedulingController');
 const AuthController = require('./controllers/AuthController');
 const authMiddleware = require("./middlewares/auth");
+const TotalVoice = require('./api/TotalVoice');
 
 const routes = express.Router();
 
 routes.post('/authenticate', AuthController.authenticate);
 //routes.use(authMiddleware);
+
+routes.post('/verification-phone', TotalVoice.verificationPhone);
+routes.get('/validate-phone', TotalVoice.validatePhone);
 
 routes.post('/barbershop', BarbershopController.post);
 routes.get('/barbershop', BarbershopController.get);

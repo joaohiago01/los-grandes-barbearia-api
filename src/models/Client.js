@@ -40,20 +40,14 @@ class Client extends Model {
                 }
             },
         }, {
-            /*hooks: {
-                beforeSave: async function(next) {
-                    this.password = await bcrypt.hash(this.password, 8);
-                    next();
-                }
-            },*/
             sequelize,
             tableName: 'client',
         })
 
-        /*Client.beforeSave('hash',
+        /*Client.beforeSave(Client, 'hash',
             async (next) => {
-                const hash = await bcrypt.hash(this.password, 10);
-                this.password = hash;
+                //const hash = await bcrypt.hash(this.password, 10);
+                //this.password = hash;
                 next();
             });*/
     }
@@ -67,5 +61,12 @@ class Client extends Model {
             expiresIn: 86400
         });
     }
+
+    async hashPassword(password) {
+        const hash = await bcrypt.hash(password, 10);
+        password = hash;
+        return password;
+    }
 }
+
 module.exports = Client;

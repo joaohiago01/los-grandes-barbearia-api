@@ -23,7 +23,7 @@ module.exports = {
                     }
                 });
                 if (client.length < 1) {
-                    client = await Client.create({ name, email, phone, password });
+                    client = await Client.create({ name, email, phone, hash });
                     return res.json({
                         client: client,
                         token: client.generateToken(),

@@ -1,6 +1,6 @@
 const Client = require('../models/Client');
 const Barber = require('../models/Barber');
-const bcrypt = require('bcrypt');
+//const bcrypt = require('bcrypt');
 
 module.exports = {
 
@@ -14,9 +14,9 @@ module.exports = {
                     return res.status(400).json({ error: "Usuário não encontrado" });
                 }
             }
-            if (!await bcrypt.compare(password, client.password)) {
+            /*if (!await bcrypt.compare(password, client.password)) {
                 return res.status(400).json({ error: "Senha inválida" });
-            }
+            }*/
             return res.json({
                 user: user,
                 token: user.generateToken()

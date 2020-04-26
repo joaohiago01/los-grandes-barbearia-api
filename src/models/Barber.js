@@ -63,10 +63,11 @@ class Barber extends Model {
             tableName: 'barber'
         })
 
-        /*Barber.beforeSave('hash',
-            async function hashPassword(next) {
-                if (!this.isModified("password")) next();
-                this.password = await bcrypt.hash(this.password, 8);
+        /*this.beforeSave(this, 'hash',
+            async (instance, options) => {
+                const hash = await bcrypt.hash(this.password, 10);
+                this.password = hash;
+                instance();
             });*/
     }
 

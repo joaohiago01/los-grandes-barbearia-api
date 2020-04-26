@@ -43,12 +43,12 @@ class Client extends Model {
             sequelize,
             tableName: 'client',
         })
-
-        /*Client.beforeSave(Client, 'hash',
-            async (next) => {
-                //const hash = await bcrypt.hash(this.password, 10);
-                //this.password = hash;
-                next();
+        
+        /*this.beforeSave(this, 'hash',
+            async (instance, options) => {
+                const hash = await bcrypt.hash(this.password, 10);
+                this.password = hash;
+                instance();
             });*/
     }
 
@@ -62,11 +62,6 @@ class Client extends Model {
         });
     }
 
-    async hashPassword(password) {
-        const hash = await bcrypt.hash(password, 10);
-        password = hash;
-        return password;
-    }
 }
 
 module.exports = Client;

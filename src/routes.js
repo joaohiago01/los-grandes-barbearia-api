@@ -12,7 +12,7 @@ const TotalVoice = require('./api/TotalVoice');
 const routes = express.Router();
 
 routes.post('/authenticate', AuthController.authenticate);
-//routes.use(authMiddleware);
+routes.use(authMiddleware);
 
 routes.post('/verification-phone', TotalVoice.verificationPhone);
 routes.get('/validate-phone', TotalVoice.validatePhone);

@@ -1,5 +1,5 @@
 const totalvoice = require('totalvoice-node');
-const client = new totalvoice('ee21385c1230b3cd33ab841715732a9f', 'https://api2.totalvoice.com.br/verificacao');
+const client = new totalvoice('0a48455708e04b275e96af094c22e628', 'https://api2.totalvoice.com.br/verificacao');
 
 module.exports = {
 

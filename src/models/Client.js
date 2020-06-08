@@ -43,7 +43,7 @@ class Client extends Model {
             sequelize,
             tableName: 'client',
         })
-        
+
         /*this.beforeSave(this, 'hash',
             async (instance, options) => {
                 const hash = await bcrypt.hash(this.password, 10);

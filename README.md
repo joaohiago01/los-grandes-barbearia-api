@@ -62,7 +62,7 @@ $ git clone https://github.com/joaohiago01/los-grandes-barbearia-api
 # Go into the repository
 $ cd los-grandes-barbearia-api
 
-# Install dependencies
+# Run server
 $ yarn dev
 ```
 
